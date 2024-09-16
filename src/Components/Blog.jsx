@@ -12,6 +12,10 @@ export default function Blog(){
         
     console.log(blogs);
     }
+    function removeBlog(index) {
+        setBlogs(blogs.filter((_, i) => i !== index));
+    }
+    
     
     return(
         <>
@@ -54,6 +58,10 @@ export default function Blog(){
             <div className="blog" key={i}>
                 <h3>{blog.title}</h3>
                 <p>{blog.content}</p>
+                <div className="blog-btn">
+                    <button className="btn remove" onClick={()=>removeBlog(i)}>Delete</button>
+
+                </div>
             </div>
         ))}
         
