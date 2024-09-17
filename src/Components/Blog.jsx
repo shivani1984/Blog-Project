@@ -1,11 +1,23 @@
 //Blogging App using Hooks
-import { useState, useRef} from "react";
+import { useState, useRef, useEffect} from "react";
 export default function Blog(){
     
     
     const[formData, setFormData] = useState({title:"", content:"" });
     const [blogs, setBlogs] = useState([]);
     const titleRef =useRef(null);
+    useEffect(()=>{
+        titleRef.current.focus();
+    },[]);
+
+
+    useEffect(()=> {
+       if(blogs.length && blogs[0].title){
+        document.title = blogs[0].title;}
+        else{
+            document.title = "NO Blogs"}
+        },[blogs])
+
 
 
     function handleSubmit(e){
@@ -57,6 +69,7 @@ export default function Blog(){
                         <textarea className="input content"
                                 placeholder="Content for Blogs...."
                                 value ={formData.content}
+                                required
                                 onChange={(e)=>setFormData({title: formData.title, content: e.target.value})}/>
                 </Row >
 
