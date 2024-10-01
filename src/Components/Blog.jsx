@@ -1,7 +1,7 @@
 // Blogging App using Hooks
 import { useState, useRef, useEffect, useReducer } from "react";
 import { db } from "./firebaseInit";
-import { collection, addDoc,setDoc, doc} from "firebase/firestore"; 
+import { collection, addDoc,setDoc, doc, where, query, getDocs} from "firebase/firestore"; 
 
 
 
@@ -16,6 +16,28 @@ export default function Blog() {
         titleRef.current.focus();
     }, [])
 
+
+    useEffect(() => {
+       async function fetchdata(){
+        const snapShot = await getDocs(collection(db, "blogs"));
+
+        const blogs= snapShot.docs.map((doc)=>{
+
+            return{
+                id:doc.id,
+                ...doc.data()
+
+            }
+
+        })
+        setBlogs(blogs);
+
+       }
+
+       fetchdata();
+    }, [])
+
+
     async function handleSubmit(e) {
         e.preventDefault();
         titleRef.current.focus();
@@ -28,9 +50,15 @@ const docRef = doc(collection(db, "blogs"));
     title: formData.title,
     content: formData.content,
     createdOn: new Date()
+
+    
+
+    
     
     
   });
+
+  
   console.log("Document written with ID: ", docRef.id);
   setFormData({ title: "", content: "" });
   
@@ -43,6 +71,11 @@ const docRef = doc(collection(db, "blogs"));
     function removeBlog(i) {
         setBlogs( blogs.filter((blog,index)=> index !== i));
     }
+
+    
+
+
+    
 
     return (
         <>
