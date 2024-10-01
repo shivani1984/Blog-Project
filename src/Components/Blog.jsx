@@ -1,7 +1,7 @@
 // Blogging App using Hooks
 import { useState, useRef, useEffect, useReducer } from "react";
 import { db } from "./firebaseInit";
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc,setDoc, doc} from "firebase/firestore"; 
 
 
 
@@ -22,14 +22,16 @@ export default function Blog() {
         setBlogs([{title:formData.title, content:formData.content},...blogs]);
         
         // Add a new document with a generated id.
-const docRef = await addDoc(collection(db, "blogs"), {
+const docRef = doc(collection(db, "blogs"));
+    await setDoc(docRef,{
+     
     title: formData.title,
     content: formData.content,
     createdOn: new Date()
     
     
   });
-  //console.log("Document written with ID: ", docRef.id);
+  console.log("Document written with ID: ", docRef.id);
   setFormData({ title: "", content: "" });
   
 
